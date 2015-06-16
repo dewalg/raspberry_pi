@@ -1,5 +1,4 @@
 # python 3 using RPi GPIO library
-# test commit
 
 import RPi.GPIO as gp
 import time
@@ -7,7 +6,7 @@ import time
 gp.setmode(gp.BCM)
 
 led = 22
-wait = 1 # in seconds
+wait = 0.01 # in seconds
 gp.setup(led, gp.OUT)
 
 try:
