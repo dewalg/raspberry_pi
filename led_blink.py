@@ -6,7 +6,7 @@ import time
 gp.setmode(gp.BCM)
 
 led = 22
-wait = 0.01 # in seconds
+wait = 0.05 # in seconds
 gp.setup(led, gp.OUT)
 
 try:
