@@ -19,4 +19,4 @@ try:
 		sleep(20)
 except KeyboardInterrupt:
 	GPIO.output(Motor1E, GPIO.LOW)
-  GPIO.cleanup() 
+	GPIO.cleanup() 
