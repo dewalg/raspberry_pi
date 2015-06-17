@@ -3,13 +3,13 @@ from time import sleep
  
 GPIO.setmode(GPIO.BCM)
  
-Motor1A = 23
-pwm_pin = 24
+Motor1A = 24
+pwm_pin = 23
 Motor1E = 25
  
 GPIO.setup(Motor1A,GPIO.OUT)
 GPIO.setup(pwm_pin, GPIO.OUT)
-p = GPIO.PWM(pwm_pin, 50)
+p = GPIO.PWM(pwm_pin, 1000)
 GPIO.setup(Motor1E,GPIO.OUT)
 try:
 	GPIO.output(Motor1E, GPIO.HIGH)
