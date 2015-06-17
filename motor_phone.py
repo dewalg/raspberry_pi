@@ -1,4 +1,20 @@
 import socket, traceback
+import RPi.GPIO as GPIO
+from time import sleep
+GPIO.setmode(GPIO.BCM)
+ 
+Motor1A = 24
+pwm_pin = 23
+Motor1E = 25
+ 
+GPIO.setup(Motor1A,GPIO.OUT)
+GPIO.setup(pwm_pin, GPIO.OUT)
+p = GPIO.PWM(pwm_pin, 1000)
+GPIO.setup(Motor1E,GPIO.OUT)
+
+GPIO.output(Motor1E, GPIO.HIGH)
+GPIO.output(Motor1A, GPIO.LOW)
+p.start(0)
 
 host = ''
 port = 5555
@@ -11,6 +27,9 @@ while 1:
 		message, address = s.recvfrom(8192)
 		print message
 	except (KeyboardInterrupt, SystemExit):
+		p.stop()
+		GPIO.output(Motor1E, GPIO.LOW)
+		GPIO.cleanup() 
 		raise
 	except:
 		traceback.print_exc()
