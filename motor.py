@@ -8,6 +8,7 @@ pwm_pin = 24
 Motor1E = 25
  
 GPIO.setup(Motor1A,GPIO.OUT)
+GPIO.setup(pwm_pin, GPIO.OUT)
 p = GPIO.PWM(pwm_pin, 50)
 GPIO.setup(Motor1E,GPIO.OUT)
 try:
@@ -15,11 +16,12 @@ try:
 	GPIO.output(Motor1A, GPIO.LOW)
 	p.start(0)
 	while 1:
-		for i in range(1,101):
+		for i in range(1,101,5):
 			p.ChangeDutyCycle(i)
-		for i in range(1,101):
-			p.ChangeDutyCyle(101-i)
-			
+			sleep(0.5)
+		for i in range(1,101,5):
+			p.ChangeDutyCycle(101-i)
+			sleep(0.5)
 	# while 1:
 	# 	print "Turning motor on"
 	# 	GPIO.output(Motor1A,GPIO.HIGH)
