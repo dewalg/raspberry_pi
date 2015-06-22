@@ -1,3 +1,5 @@
+# works with python 2.7.3 and rpi Rasbian 3.18.11v7 and Wireless IMU (android)
+
 import socket, traceback
 import RPi.GPIO as GPIO
 from time import sleep
