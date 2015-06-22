@@ -23,13 +23,14 @@ s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 s.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
 s.bind((host, port))
 
-DEBUG_MODE = False
+calibration_counter = 0
 
-while 1:
-	try:
-		import StringIO
-        import csv
-        import math
+try:
+	import StringIO
+    import csv
+    import math
+
+    while 1:
 
         message, address = s.recvfrom(8192)
         m = csv.reader(StringIO.StringIO(message))
@@ -88,11 +89,11 @@ while 1:
         print t, g_angle, a_angle, fil_angle
 
         calibration_counter += 1
-	except (KeyboardInterrupt, SystemExit):
 
+except (KeyboardInterrupt, SystemExit):
 		p.stop()
 		GPIO.output(Motor1E, GPIO.LOW)
 		GPIO.cleanup()
 		raise
-	except:
+except:
 		traceback.print_exc()
