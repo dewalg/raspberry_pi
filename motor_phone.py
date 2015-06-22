@@ -80,6 +80,8 @@ try:
 
         if fil_angle > 90:
             dc = 100
+        elif fil_angle < 0:
+            dc = 0
         else:
             dc = fil_angle
 
