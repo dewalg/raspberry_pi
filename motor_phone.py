@@ -26,9 +26,9 @@ s.bind((host, port))
 calibration_counter = 0
 
 try:
-	import StringIO
-	import csv
-	import math
+    import StringIO
+    import csv
+    import math
 
     while 1:
 
@@ -91,9 +91,9 @@ try:
         calibration_counter += 1
 
 except (KeyboardInterrupt, SystemExit):
-		p.stop()
-		GPIO.output(Motor1E, GPIO.LOW)
-		GPIO.cleanup()
-		raise
+        p.stop()
+        GPIO.output(Motor1E, GPIO.LOW)
+        GPIO.cleanup()
+        raise
 except:
-		traceback.print_exc()
+        traceback.print_exc()
