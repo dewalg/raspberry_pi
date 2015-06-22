@@ -27,8 +27,8 @@ calibration_counter = 0
 
 try:
 	import StringIO
-    import csv
-    import math
+	import csv
+	import math
 
     while 1:
 
