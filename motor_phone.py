@@ -30,8 +30,6 @@ while 1:
 		import StringIO
         import csv
         import math
-        import plotly.plotly as py
-        from plotly.graph_objs import *
 
         message, address = s.recvfrom(8192)
         m = csv.reader(StringIO.StringIO(message))
@@ -39,20 +37,6 @@ while 1:
 
         if calibration_counter == 0:
             print "calibrating! Do not move device!"
-
-            ## initiate the real-time plotting
-            if DEBUG_MODE:
-                trace1 = Scatter(x=[], y=[], stream=dict(token='yx22lx9rw1'))
-                trace2 = Scatter(x=[], y=[], stream=dict(token='vpc456qm13'))
-                trace3 = Scatter(x=[], y=[], stream=dict(token='k7o9t5gowj'))
-                data = Data([trace1, trace2, trace3])
-                py.plot(data)
-                st1 = py.Stream('yx22lx9rw1')
-                st2 = py.Stream('vpc456qm13')
-                st3 = py.Stream('k7o9t5gowj')
-                st1.open()
-                st2.open()
-                st3.open()
 
             t = float(m[0])
             g_angle = 0
@@ -93,11 +77,6 @@ while 1:
             g_angle = g_angle + math.degrees(gx_raw)*dt - offset
             fil_angle = 0.995*(fil_angle + math.degrees(gx_raw)*dt) + 0.005*a_angle
 
-        if DEBUG_MODE and not calibration_counter % 5:
-            st1.write(dict(x=t, y=g_angle))
-            st2.write(dict(x=t, y=a_angle))
-            st3.write(dict(x=t, y=fil_angle))
-
         if fil_angle > 90:
             dc = 100
         else
@@ -110,10 +89,7 @@ while 1:
 
         calibration_counter += 1
 	except (KeyboardInterrupt, SystemExit):
-        if DEBUG_MODE:
-            st1.close()
-            st2.close()
-            st3.close()
+
 		p.stop()
 		GPIO.output(Motor1E, GPIO.LOW)
 		GPIO.cleanup()
