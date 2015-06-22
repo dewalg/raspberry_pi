@@ -80,7 +80,7 @@ try:
 
         if fil_angle > 90:
             dc = 100
-        else
+        else:
             dc = fil_angle
 
         p.ChangeDutyCycle(dc)
