@@ -109,7 +109,7 @@ try:
             disp_num(dc % 10, pin)
 
         # if not calibration_counter % 10:
-        print t, g_angle, a_angle, fil_angle
+        print t, g_angle, a_angle, fil_angle, dc%10
 
         calibration_counter += 1
 
