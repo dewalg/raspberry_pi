@@ -20,7 +20,7 @@ for p in pin:
 try:
     for x in range(0,10):
         print x
-        sdd.disp_num(x,pin)
+        disp_num(x,pin)
         sleep(2)
     GPIO.cleanup()
 except KeyboardInterrupt:

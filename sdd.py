@@ -1,10 +1,10 @@
 # python 2.7.9
 import RPi.GPIO as GPIO
 
-def display_num(num, pin):
+def disp_num(num, pin):
     if num > 9 or num < 0:
         return 0
-    elif len(pinout) != 7:
+    elif len(pin) != 7:
         return 0
 
     if num == 0:
