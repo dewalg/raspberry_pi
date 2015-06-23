@@ -106,7 +106,7 @@ try:
         p.ChangeDutyCycle(dc)
 
         if SDD_CONNECTED:
-            disp_num(dc % 10, pin)
+            disp_num(int(round(dc)) % 10, pin)
 
         # if not calibration_counter % 10:
         print t, g_angle, a_angle, fil_angle, dc%10
