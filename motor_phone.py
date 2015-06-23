@@ -94,7 +94,7 @@ try:
         if calibration_counter > 11:
             a_angle = math.degrees(math.atan(ay_raw/(pow(ax_raw,2)+pow(az_raw,2))))
             g_angle = g_angle + math.degrees(gx_raw)*dt - offset
-            fil_angle = 0.995*(fil_angle + math.degrees(gx_raw)*dt) + 0.005*a_angle
+            fil_angle = 0.98*(fil_angle + math.degrees(gx_raw)*dt) + 0.02*a_angle
 
         if fil_angle > 90:
             dc = 100
