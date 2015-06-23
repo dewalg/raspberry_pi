@@ -18,10 +18,10 @@ for p in pin:
     GPIO.setup(p,GPIO.OUT)
 
 try:
-	for x in range(0,10):
-		print x
+    for x in range(0,10):
+        print x
         sdd.disp_num(x,pin)
-		sleep(2)
+        sleep(2)
     GPIO.cleanup()
 except KeyboardInterrupt:
-	GPIO.cleanup()
+    GPIO.cleanup()
