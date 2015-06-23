@@ -43,6 +43,7 @@ def disp_num(num, pin):
         GPIO.output(pin[2], GPIO.HIGH)
         GPIO.output(pin[3], GPIO.HIGH)
     elif num == 4:
+        reset(pin)
         GPIO.output(pin[5], GPIO.HIGH)
         GPIO.output(pin[6], GPIO.HIGH)
         GPIO.output(pin[1], GPIO.HIGH)
@@ -82,5 +83,5 @@ def disp_num(num, pin):
         GPIO.output(pin[2], GPIO.HIGH)
         GPIO.output(pin[5], GPIO.HIGH)
         GPIO.output(pin[6], GPIO.HIGH)
-        
+
     return 1
