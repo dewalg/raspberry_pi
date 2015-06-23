@@ -5,6 +5,22 @@ import RPi.GPIO as GPIO
 from time import sleep
 GPIO.setmode(GPIO.BCM)
 
+SDD_CONNECTED = True
+
+if SDD_CONNECTED:
+    from sdd import disp_num
+    a = 13
+    b = 5
+    c = 12
+    d = 16
+    e = 21
+    f = 19
+    g = 26
+    pin = [a,b,c,d,e,f,g]
+
+    for p in pin:
+        GPIO.setup(p,GPIO.OUT)
+
 Motor1A = 24
 pwm_pin = 23
 Motor1E = 25
@@ -88,6 +104,9 @@ try:
             dc = fil_angle
 
         p.ChangeDutyCycle(dc)
+
+        if SDD_CONNECTED:
+            disp_num(dc % 10, pin)
 
         # if not calibration_counter % 10:
         print t, g_angle, a_angle, fil_angle
