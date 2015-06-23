@@ -19,8 +19,8 @@ for p in pin:
 
 try:
     for x in range(0,10):
-        print x
-        disp_num(x,pin)
+        if disp_num(x,pin):
+            print x
         sleep(2)
     GPIO.cleanup()
 except KeyboardInterrupt:
