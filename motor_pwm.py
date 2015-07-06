@@ -1,12 +1,12 @@
 import RPi.GPIO as GPIO
 from time import sleep
- 
+
 GPIO.setmode(GPIO.BCM)
- 
+
 Motor1A = 24
 pwm_pin = 23
-Motor1E = 25
- 
+Motor1E = 29
+
 GPIO.setup(Motor1A,GPIO.OUT)
 GPIO.setup(pwm_pin, GPIO.OUT)
 p = GPIO.PWM(pwm_pin, 1000)
@@ -31,4 +31,4 @@ try:
 except KeyboardInterrupt:
 	p.stop()
 	GPIO.output(Motor1E, GPIO.LOW)
-	GPIO.cleanup() 
+	GPIO.cleanup()
