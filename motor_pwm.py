@@ -5,7 +5,7 @@ GPIO.setmode(GPIO.BCM)
 
 Motor1A = 24
 pwm_pin = 23
-Motor1E = 29
+Motor1E = 25
 
 GPIO.setup(Motor1A,GPIO.OUT)
 GPIO.setup(pwm_pin, GPIO.OUT)
