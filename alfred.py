@@ -131,7 +131,7 @@ class Mic:
             f.seek(0)
             # check if PERSONA was said
             transcribed = self.passive_stt_engine.transcribe(f)
-            self.logger("TRANSCRIBED: " + transcribed)
+            self.logger.info("TRANSCRIBED: " + str(transcribed))
 
         if any(PERSONA in phrase for phrase in transcribed):
             return (THRESHOLD, PERSONA)
@@ -163,7 +163,7 @@ class Wit():
         data = fp.read()
         r = requests.post('https://api.wit.ai/speech?v=20150101',
                           data=data,
-                          headers=self.headers)
+                          headers=self._headers)
         try:
             r.raise_for_status()
             text = r.json()['_text']
