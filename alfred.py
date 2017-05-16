@@ -35,6 +35,47 @@ class Mic:
     def __del__(self):
         self._audio.terminate()
 
+    def fetchThreshold(self):
+
+        # TODO: Consolidate variables from the next three functions
+        THRESHOLD_MULTIPLIER = 1.8
+        RATE = 16000
+        CHUNK = 1024
+
+        # number of seconds to allow to establish threshold
+        THRESHOLD_TIME = 1
+
+        # prepare recording stream
+        stream = self._audio.open(format=pyaudio.paInt16,
+                                  channels=1,
+                                  rate=RATE,
+                                  input=True,
+                                  frames_per_buffer=CHUNK)
+
+        # stores the audio data
+        frames = []
+
+        # stores the lastN score values
+        lastN = [i for i in range(20)]
+
+        # calculate the long run average, and thereby the proper threshold
+        for i in range(0, RATE / CHUNK * THRESHOLD_TIME):
+            data = stream.read(CHUNK)
+            frames.append(data)
+
+            # save this data point as a score
+            lastN.pop(0)
+            lastN.append(self.getScore(data))
+            average = sum(lastN) / len(lastN)
+
+        stream.stop_stream()
+        stream.close()
+
+        # this will be the benchmark to cause a disturbance over!
+        THRESHOLD = average * THRESHOLD_MULTIPLIER
+
+        return THRESHOLD
+
     def getScore(self, data):
         rms = audioop.rms(data, 2)
         score = rms / 3
