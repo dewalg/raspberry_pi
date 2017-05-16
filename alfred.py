@@ -9,8 +9,8 @@ import audioop
 import pyaudio
 import requests
 
-class Mic:
 
+class Mic:
     speechRec = None
     speechRec_persona = None
 
@@ -27,8 +27,8 @@ class Mic:
         self.logger = logging.getLogger(__name__)
         self.passive_stt_engine = passive_stt_engine
         self.logger.info("Initializing PyAudio. ALSA/Jack error messages " +
-                          "that pop up during this process are normal and " +
-                          "can usually be safely ignored.")
+                         "that pop up during this process are normal and " +
+                         "can usually be safely ignored.")
         self._audio = pyaudio.PyAudio()
         self.logger.info("Initialization of PyAudio completed.")
 
@@ -71,7 +71,6 @@ class Mic:
 
         # calculate the long run average, and thereby the proper threshold
         for i in range(0, RATE / CHUNK * THRESHOLD_TIME):
-
             data = stream.read(CHUNK)
             frames.append(data)
 
@@ -113,7 +112,6 @@ class Mic:
         # otherwise, let's keep recording for few seconds and save the file
         DELAY_MULTIPLIER = 1
         for i in range(0, RATE / CHUNK * DELAY_MULTIPLIER):
-
             data = stream.read(CHUNK)
             frames.append(data)
 
@@ -138,6 +136,62 @@ class Mic:
 
         return (False, transcribed)
 
+    def activeListen(self, THRESHOLD=None, LISTEN=True,
+                                 MUSIC=False):
+        """
+            Records until a second of silence or times out after 12 seconds
+
+            Returns a list of the matching options or None
+        """
+
+        RATE = 16000
+        CHUNK = 1024
+        LISTEN_TIME = 12
+
+        # check if no threshold provided
+        if THRESHOLD is None:
+            THRESHOLD = self.fetchThreshold()
+
+        # prepare recording stream
+        stream = self._audio.open(format=pyaudio.paInt16,
+                                  channels=1,
+                                  rate=RATE,
+                                  input=True,
+                                  frames_per_buffer=CHUNK)
+
+        frames = []
+        # increasing the range # results in longer pause after command
+        # generation
+        lastN = [THRESHOLD * 1.2 for i in range(30)]
+
+        for i in range(0, RATE / CHUNK * LISTEN_TIME):
+
+            data = stream.read(CHUNK)
+            frames.append(data)
+            score = self.getScore(data)
+
+            lastN.pop(0)
+            lastN.append(score)
+
+            average = sum(lastN) / float(len(lastN))
+
+            # TODO: 0.8 should not be a MAGIC NUMBER!
+            if average < THRESHOLD * 0.8:
+                break
+
+        # save the audio data
+        stream.stop_stream()
+        stream.close()
+
+        with tempfile.SpooledTemporaryFile(mode='w+b') as f:
+            wav_fp = wave.open(f, 'wb')
+            wav_fp.setnchannels(1)
+            wav_fp.setsampwidth(pyaudio.get_sample_size(pyaudio.paInt16))
+            wav_fp.setframerate(RATE)
+            wav_fp.writeframes(''.join(frames))
+            wav_fp.close()
+            f.seek(0)
+            return self.passive_stt_engine.transcribe(f)
 
 class Wit():
     """
@@ -192,7 +246,7 @@ class Wit():
 
 
 if __name__ == "__main__":
-    
+
     logging.basicConfig()
     logger = logging.getLogger()
     logger.setLevel(logging.INFO)
@@ -203,10 +257,10 @@ if __name__ == "__main__":
     mic = Mic(wit)
     while True:
         logger.info("Started listening for keyword '%s'",
-                           persona)
-        threshold, transcribed = mic.passiveListen(persona)
+                    persona)
+        threshold, transcribed = mic.activeListen()
         logger.info("Stopped listening for keyword '%s'",
-                           persona)
+                    persona)
 
         if not transcribed or not threshold:
             logger.info("Nothing has been said or transcribed.")
@@ -214,7 +268,7 @@ if __name__ == "__main__":
         logger.info("Keyword '%s' has been said!", persona)
 
         logger.info("Started to listen actively with threshold: %r",
-                           threshold)
+                    threshold)
         input = mic.activeListenToAllOptions(threshold)
         logger.info("Stopped to listen actively with threshold: %r",
-                           threshold)
+                    threshold)
